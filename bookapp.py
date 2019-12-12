@@ -12,6 +12,23 @@ def book(book_id):
 def books():
     return "<h1>a list of books</h1>"
 
+def resolve_path(path):
+    funcs = {
+        '': books,
+        'book': book,
+    }
+
+    path = path.strip('/').split('/')
+
+    func_name = path[0]
+    args = path[1:]
+
+    try:
+        func = funcs[func_name]
+    except KeyError:
+        raise NameError
+
+    return func, args
 
 def application(environ, start_response):
     status = "200 OK"
