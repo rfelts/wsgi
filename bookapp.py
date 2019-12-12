@@ -11,7 +11,24 @@ DB = BookDB()
 
 
 def book(book_id):
-    return "<h1>a book with id %s</h1>" % book_id
+    """
+    Get the detailed information of the requested book id
+    :param book_id: The id of the requested book
+    :return: String containing html containing the detailed book data
+    """
+    page = """
+        <h1>{title}</h1>
+        <table>
+        <tr><th>Author</th><td>{author}</td></tr>
+        <tr><th>Publisher</th><td>{publisher}</td></tr>
+        <tr><th>ISBN</th><td>{isbn}</td></tr>
+        </table>
+        <a href="/">Back to the list</a>
+    """
+    book = DB.title_info(book_id)
+    if book is None:
+        raise NameError
+    return page.format(**book)
 
 
 def books():
@@ -78,7 +95,7 @@ def application(environ, start_response):
     finally:
         headers.append(('Content-length', str(len(body))))
         start_response(status, headers)
-        return [body.encode('utf8')]
+    return [body.encode('utf8')]
 
 
 if __name__ == '__main__':
