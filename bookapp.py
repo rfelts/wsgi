@@ -15,7 +15,17 @@ def book(book_id):
 
 
 def books():
-    return "<h1>a list of books</h1>"
+    """
+    Creates a list of all the books in the db
+    :return: A string containing html representing a list of the books in the db
+    """
+    all_books = DB.titles()
+    body = ['<h1>My Bookshelf</h1>', '<ul>']
+    item_template = '<li><a href="/book/{id}">{title}</a></li>'
+    for book in all_books:
+        body.append(item_template.format(**book))
+    body.append('</ul>')
+    return '\n'.join(body)
 
 
 def resolve_path(path):
@@ -27,7 +37,7 @@ def resolve_path(path):
     """
     funcs = {
         '': books,
-        'book': book,
+        'book': book
     }
 
     path = path.strip('/').split('/')
